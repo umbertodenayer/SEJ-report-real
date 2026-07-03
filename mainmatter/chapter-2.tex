@@ -25,6 +25,8 @@ Under the null hypothesis that the expert is perfectly calibrated, the test stat
 \]
 A low calibration score (e.g., $p < 0.05$) indicates that the expert's intervals are typically too narrow (overconfidence) or structurally skewed, causing them to miss the true value more often than statistically expected.
 
+The chi-square reference distribution is an asymptotic approximation: it follows from the likelihood-ratio statistic $2nI(s/n,p)$ converging in distribution to $\chi^2_{q-1}$ as the number of independent seed variables grows. Here, $n=10$, so the expected counts in the two 5\% tail bins are only $0.5$. The approximation can therefore be coarse, and small changes in bin membership can have a visible effect on the resulting $p$-value. This study retains the conventional Classical Model score for comparability, but interprets it as a performance diagnostic rather than an exact finite-sample probability.
+
 \section{Information Score (Relative Entropy)}
 \label{sec:information_score}
 
@@ -34,6 +36,8 @@ The information score for an expert $e$ on a single variable is calculated using
 \text{Inf}(e) = \int f_e(x) \ln\left(\frac{f_e(x)}{g(x)}\right) dx
 \]
 For a set of variables, the overall information score is the average of the information scores across all assessed items. Unlike the calibration score, which behaves as a significance threshold, the information score is an absolute, non-bounded metric where higher values reflect tighter, more highly concentrated interval bounds.
+
+Only three marker quantiles are elicited, so a distributional form is required between and beyond them. The present analysis uses the Classical Model's piecewise uniform or piecewise log-uniform construction over an intrinsic range rather than fitting a single parametric family. Bamber, Aspinall, and Cooke's discussion of sea-level elicitation illustrates why this distinction matters: fitted lognormal distributions introduce shape assumptions beyond the elicited 5th, 50th, and 95th percentiles, whereas non-parametric quantile processing remains driven principally by the judgments actually supplied~\cite{bamberAspinallCooke2016}. The trade-off is that tail behaviour depends explicitly on the intrinsic-range convention, which is tested in Section~\ref{sec:sensitivity}.
 
 \section{The Decision Maker (Performance Weights)}
 \label{sec:decision_maker}

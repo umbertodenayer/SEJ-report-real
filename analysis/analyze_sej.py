@@ -61,7 +61,7 @@ def load(path: Path):
     return rows, cal, tgt
 
 
-def intrinsic_ranges(values: np.ndarray, log_flags: np.ndarray, realizations=None):
+def intrinsic_ranges(values: np.ndarray, log_flags: np.ndarray, realizations=None, overshoot=0.10):
     ranges = []
     for j, is_log in enumerate(log_flags):
         points = values[:, j, :].ravel()
@@ -71,7 +71,8 @@ def intrinsic_ranges(values: np.ndarray, log_flags: np.ndarray, realizations=Non
             raise ValueError(f"Item {j + 1} is log-uniform but contains a non-positive value")
         transformed = np.log(points) if is_log else points
         width = transformed.max() - transformed.min()
-        low_t, high_t = transformed.min() - 0.1 * width, transformed.max() + 0.1 * width
+        low_t = transformed.min() - overshoot * width
+        high_t = transformed.max() + overshoot * width
         low, high = (math.exp(low_t), math.exp(high_t)) if is_log else (low_t, high_t)
         ranges.append(ItemRange(low, high, bool(is_log)))
     return ranges
@@ -145,11 +146,31 @@ def optimize(cal_values, info_values, cal_data, cal_ranges):
     return max(options, key=lambda x: (x[0], x[1]))
 
 
+def evaluate_configuration(cal, tgt, cal_log, tgt_log, overshoot):
+    cal_ranges = intrinsic_ranges(cal, cal_log, REALIZATIONS, overshoot)
+    tgt_ranges = intrinsic_ranges(tgt, tgt_log, overshoot=overshoot)
+    counts, cal_scores, _, mean_infos = expert_metrics(cal, cal_ranges)
+    combined, alpha, weights, _, dm_counts, dm_cal, dm_info = optimize(
+        cal_scores, mean_infos, cal, cal_ranges)
+    forecasts = mixture_quantiles(tgt, weights, tgt_ranges)
+    return {
+        "overshoot": overshoot,
+        "background": "mixed" if np.any(cal_log) else "all-uniform",
+        "alpha": alpha,
+        "weights": weights,
+        "calibration": dm_cal,
+        "information": dm_info,
+        "combined": combined,
+        "targets": forecasts,
+    }
+
+
 def fmt(x, digits=3):
     return f"{x:.{digits}f}"
 
 
-def write_tex(counts, cal_scores, mean_infos, weights, dm_metrics, forecasts, ewdm_metrics, ewdm_forecasts, alpha):
+def write_tex(counts, cal_scores, mean_infos, weights, dm_metrics, forecasts,
+              ewdm_metrics, ewdm_forecasts, alpha, sensitivity):
     OUT.mkdir(parents=True, exist_ok=True)
     rows = []
     for e in range(len(cal_scores)):
@@ -160,7 +181,10 @@ def write_tex(counts, cal_scores, mean_infos, weights, dm_metrics, forecasts, ew
     (OUT / "expert_table.tex").write_text("\n".join(rows) + "\n\\bottomrule\n")
     _, dm_cal, dm_info, dm_combined = dm_metrics
     _, ew_cal, ew_info, ew_combined = ewdm_metrics
+    best = int(np.argmax(cal_scores * mean_infos))
     (OUT / "dm_table.tex").write_text(
+        f"Best Expert (Expert {best+1}) & {cal_scores[best]:.4f} & {mean_infos[best]:.3f} & "
+        f"{cal_scores[best]*mean_infos[best]:.4f} \\\\\n"
         f"Equal-weight DM & {ew_cal:.4f} & {ew_info:.3f} & {ew_combined:.4f} \\\\\n"
         f"Optimized performance-weight DM & {dm_cal:.4f} & {dm_info:.3f} & {dm_combined:.4f} \\\\\n\\bottomrule\n"
     )
@@ -186,6 +210,18 @@ def write_tex(counts, cal_scores, mean_infos, weights, dm_metrics, forecasts, ew
         for k, quantile in enumerate(("Five", "Median", "NinetyFive")):
             macros.append(f"\\newcommand{{\\{stem}{quantile}}}{{{forecasts[j,k]:,.{decimals}f}}}")
     (OUT / "results_macros.tex").write_text("\n".join(macros) + "\n")
+    sensitivity_rows = []
+    for s in sensitivity:
+        w = s["weights"]
+        q = s["targets"][0]
+        label = (f"{int(s['overshoot']*100)}\\% overshoot"
+                 if s["background"] == "mixed" else "All-uniform, 10\\%")
+        sensitivity_rows.append(
+            f"{label} & {s['alpha']:.4f} & {s['calibration']:.4f} & {s['information']:.3f} & "
+            f"{s['combined']:.4f} & {w[1]+w[3]:.3f} & {q[1]:,.0f} \\\\"
+        )
+    (OUT / "sensitivity_table.tex").write_text(
+        "\n".join(sensitivity_rows) + "\n\\bottomrule\n")
 
 
 def range_plots(cal, ranges):
@@ -255,8 +291,13 @@ def main():
     ew_metrics = dm_seed_score(ew_seed, cal_ranges)
     ew_forecasts = mixture_quantiles(tgt, ew, tgt_ranges)
     dm_metrics = (dm_counts, dm_cal, dm_info, combined)
+    sensitivity = [
+        evaluate_configuration(cal, tgt, CAL_LOG, TGT_LOG, o) for o in (0.05, 0.10, 0.20)
+    ]
+    sensitivity.append(evaluate_configuration(
+        cal, tgt, np.zeros(10, dtype=bool), np.zeros(4, dtype=bool), 0.10))
     write_tex(counts, cal_scores, mean_infos, weights, dm_metrics, forecasts,
-              ew_metrics, ew_forecasts, alpha)
+              ew_metrics, ew_forecasts, alpha, sensitivity)
     range_plots(cal, cal_ranges)
     summary_plots(cal_scores, mean_infos, weights, forecasts, ew_forecasts, alpha)
     OUT.mkdir(parents=True, exist_ok=True)
@@ -269,6 +310,10 @@ def main():
                             "combined": ew_metrics[3], "targets": ew_forecasts.tolist()},
         "optimized_dm": {"calibration": dm_cal, "information": dm_info,
                          "combined": combined, "targets": forecasts.tolist()},
+        "sensitivity": [
+            {k: (v.tolist() if isinstance(v, np.ndarray) else v) for k, v in s.items()}
+            for s in sensitivity
+        ],
     }
     (OUT / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
     print(json.dumps(summary, indent=2))

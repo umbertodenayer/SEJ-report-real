@@ -9,7 +9,7 @@ Within each background range, an expert's density is piecewise uniform (or piece
 
 \section{Aggregation Schemes}
 
-Two aggregation schemes are retained for direct comparison. The Equal Weight Decision Maker (EWDM) assigns $1/7$ to every expert. The performance-weighted Decision Maker assigns raw weight
+Three benchmarks are retained for direct comparison. The Best Expert (BE) is the individual with the largest product of calibration and mean information; in this panel that is Expert 2. The Equal Weight Decision Maker (EWDM) assigns $1/7$ to every expert. The performance-weighted Decision Maker assigns raw weight
 \[
 w_e=\operatorname{Cal}_e\operatorname{Inf}_e\mathbf{1}\{\operatorname{Cal}_e\geq\alpha\}
 \]
@@ -36,27 +36,49 @@ The optimization considered zero and each distinct expert calibration score as c
 
 \section{Decision Maker Performance}
 
-Table~\ref{tab:dm_performance} compares the virtual experts on the same seed variables. The equal-weight DM is more statistically accurate, but substantially less informative. The optimized DM has the higher product score ($0.2988$ versus $0.2191$), so it is selected for the primary forecasts. The equal-weight results remain visible in Chapter~\ref{chapter:results} as a robustness benchmark.
+Table~\ref{tab:dm_performance} compares the optimized DM with the equal-weight pool and the Best Expert on the same seed variables. Expert 2 is the BE with a combined score of $0.2645$. The EWDM is more statistically accurate, but substantially less informative. The optimized DM achieves the largest combined score ($0.2988$), exceeding both the BE and EWDM, and is therefore selected for the primary forecasts. Equal-weight results remain visible in Chapter~\ref{chapter:results} as a robustness benchmark.
 
 \begin{table}[htbp]
     \centering
+    \small
     \begin{tabular}{lccc}
         \toprule
         \textbf{Decision Maker} & \textbf{Calibration} & \textbf{Mean information} & \textbf{Combined score} \\
         \midrule
         \input{analysis/generated/dm_table}
     \end{tabular}
-    \caption{Performance of the equal-weight and optimized Decision Makers on the seed variables.}
+    \caption{Performance of the Best Expert, equal-weight Decision Maker, and optimized Decision Maker on the seed variables.}
     \label{tab:dm_performance}
 \end{table}
 
-The distinction matters: calibration and information reward different properties. Equal weighting produces wider distributions that cover the realizations more often, whereas optimized performance weighting retains sharper distributions while remaining acceptably calibrated. Selecting the optimized DM is therefore supported by the proper combined score, not by informativeness alone.
+The distinction matters: calibration and information reward different properties. Expert 5 is the most informative retained individual ($1.118$), but its calibration score is only $0.0357$. Expert 7 still appears reasonably informative ($1.073$), yet its calibration score of $0.0008$ reveals severe overconfidence and gives it zero optimized weight. Conversely, equal weighting produces wider distributions that cover realizations more often but sacrifices information. The optimized DM is not best on either component in isolation; it is best on their proper combined score, demonstrating the intended balance of the Classical Model.
 
 Figure~\ref{fig:expert_performance} visualizes the trade-off. Marker area represents optimized weight. Experts 2 and 4 occupy the high-calibration region and consequently dominate the pool; Experts 6 and 7 fall well to the left of the selected threshold.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.82\textwidth]{figures/generated/expert-performance.pdf}
     \caption{Calibration and mean information scores for the seven experts. Labels are anonymous expert identifiers; marker area is proportional to optimized weight.}
     \label{fig:expert_performance}
 \end{figure}
+
+\section{Sensitivity to Modelling Choices}
+\label{sec:sensitivity}
+
+Information scores depend on analyst-selected intrinsic ranges and background measures. Table~\ref{tab:sensitivity} therefore repeats the complete optimization with 5\%, 10\%, and 20\% overshoot and with an all-uniform alternative. The threshold is unchanged at $0.0357$ in every specification. Experts 2 and 4 retain approximately 75.2\% of total weight, and the optimized dwelling median varies only from 74,846 to 74,944. The combined score itself rises with a wider intrinsic range because all distributions become more informative relative to a more diffuse background; it should therefore not be compared across overshoot settings as though it were invariant. The stable threshold, weights, and forecast are the relevant robustness results.
+
+\begin{table}[htbp]
+    \centering
+    \scriptsize
+    \setlength{\tabcolsep}{4pt}
+    \begin{tabular}{lcccccc}
+        \toprule
+        \textbf{Specification} & $\boldsymbol{\alpha^*}$ & \textbf{Cal.} & \textbf{Info.} & \textbf{Combined} & $\boldsymbol{w_2+w_4}$ & \textbf{Dwelling median} \\
+        \midrule
+        \input{analysis/generated/sensitivity_table}
+    \end{tabular}
+    \caption{Sensitivity of optimized performance and the principal forecast to intrinsic-range and background-measure choices.}
+    \label{tab:sensitivity}
+\end{table}
+
+The all-uniform specification is deliberately conservative as a diagnostic rather than a preferred model: it is not scale-invariant for positive currency and count variables. Its near-identical weights and dwelling median nevertheless show that the substantive conclusion is not driven by the mixed uniform/log-uniform classification.
