@@ -1,6 +1,15 @@
 \chapter{Performance Analysis}
 \label{chapter:performance_analysis}
 
+\section{Programmatic Implementation (The Anduril Approach)}
+\label{sec:programmatic_implementation}
+
+The Classical Model was implemented as a transparent Python pipeline rather than evaluated through the legacy Windows-only Excalibur binary. This ``Anduril approach'' expresses each mathematical step directly in inspectable source code. NumPy provides numerical arrays and weighted operations; SciPy supplies Brent's root-finding algorithm through \texttt{scipy.optimize.brentq}; pandas supports tabular preparation of the Formspree export; and Matplotlib produces the diagnostic figures. The submitted aggregation module is reproduced in Appendix~\ref{appendix:programmatic_code}.
+
+For every target, the code constructs a piecewise uniform or log-uniform cumulative distribution for each expert over the intrinsic range. Linear pooling is then applied twice: once with equal weights and once with the optimized performance weights. Because the pooled distribution does not generally have a closed-form inverse, the 5th, 50th, and 95th percentiles are obtained by numerically solving $F_{\mathrm{DM}}(x)-p=0$ for $p\in\{0.05,0.50,0.95\}$. This procedure implements the same mathematical model described in Chapter~2 without relying on opaque software defaults.
+
+Programmatic implementation strengthens two principles of rational consensus. \textit{Reproducibility} follows because another analyst can inspect the data transformations, weighting rule, and inversion procedure. \textit{Accountability} follows because assumptions such as the 10\% overshoot and the uniform/log-uniform choice are explicit, versionable, and open to sensitivity testing. The pipeline was executed against the seven anonymous expert assessments, and its printed quantiles were used directly in Chapter~5.
+
 \section{Background Measures}
 \label{sec:background_measures}
 

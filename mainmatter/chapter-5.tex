@@ -4,31 +4,42 @@
 \section{Final Quantile Predictions}
 \label{sec:final_predictions}
 
-Table~\ref{tab:target_forecasts} presents the 5th, 50th, and 95th percentiles of the optimized Decision Maker for the four target variables. These are subjective uncertainty quantiles, not frequentist confidence limits.
+Table~\ref{tab:target_forecasts} reports the 5th, 50th, and 95th percentiles obtained by numerical inversion of the Equal Weight Decision Maker (EWDM) and optimized Performance Weight Decision Maker (PWDM). These are subjective uncertainty quantiles, not frequentist confidence limits.
 
 \begin{table}[htbp]
     \centering
-    \begin{tabular}{lrrr}
+    \scriptsize
+    \setlength{\tabcolsep}{3.5pt}
+    \begin{tabular}{lrrrrrr}
         \toprule
-        \textbf{Target variable} & $\boldsymbol{q_{0.05}}$ & $\boldsymbol{q_{0.50}}$ & $\boldsymbol{q_{0.95}}$ \\
+        & \multicolumn{3}{c}{\textbf{EWDM}} & \multicolumn{3}{c}{\textbf{Optimized PWDM}} \\
+        \cmidrule(lr){2-4}\cmidrule(lr){5-7}
+        \textbf{Target variable} & $q_{0.05}$ & $q_{0.50}$ & $q_{0.95}$ & $q_{0.05}$ & $q_{0.50}$ & $q_{0.95}$ \\
         \midrule
-        Completed dwellings & \DwellingsFive{} & \DwellingsMedian{} & \DwellingsNinetyFive{} \\
-        Residential building permits & \PermitsFive{} & \PermitsMedian{} & \PermitsNinetyFive{} \\
-        Amsterdam transaction price (\euro) & \PriceFive{} & \PriceMedian{} & \PriceNinetyFive{} \\
-        Free-sector rent growth (\%) & \RentFive{} & \RentMedian{} & \RentNinetyFive{} \\
+        Completed dwellings & 53,713 & 72,792 & 92,432 & 56,764 & 74,847 & 93,468 \\
+        Residential building permits & 47,389 & 70,882 & 111,352 & 47,414 & 67,915 & 88,840 \\
+        Rotterdam transaction price (\euro) & 539,407 & 667,113 & 786,052 & 587,397 & 669,298 & 763,297 \\
+        Free-sector rent growth (\%) & 2.31 & 4.57 & 7.30 & 2.35 & 4.96 & 7.53 \\
         \bottomrule
     \end{tabular}
-    \caption{Optimized Decision Maker forecasts for 2027.}
+    \caption{Programmatically calculated EWDM and optimized PWDM forecasts for 2027.}
     \label{tab:target_forecasts}
 \end{table}
 
-The optimized distribution places the median number of completed dwellings at \DwellingsMedian{}, with a central 90\% interval from \DwellingsFive{} to \DwellingsNinetyFive{}. The corresponding permit forecast has a median of \PermitsMedian{} and an interval from \PermitsFive{} to \PermitsNinetyFive{}. The Amsterdam transaction-price median is \euro\PriceMedian, while the median forecast for free-sector rent growth is \RentMedian\%.
+Figure~\ref{fig:target_predictions} displays the pooled intervals alongside the seven elicited expert intervals. It makes visible which tail assessments are retained under equal weighting and attenuated under performance weighting.
+
+\begin{figure}[p]
+    \centering
+    \includegraphics[width=\textwidth]{figures/generated/target_predictions_plot.png}
+    \caption{Individual expert, EWDM, and optimized PWDM 90\% uncertainty intervals and medians for the four target variables.}
+    \label{fig:target_predictions}
+\end{figure}
 
 \section{Narrative Interpretation}
 \label{sec:narrative_interpretation}
 
-The completed-dwellings forecast is the clearest policy result. Its median is approximately 25\% below the government's ambition of 100,000 dwellings per year, and even the 95th percentile remains below that benchmark. Conditional on this panel and model specification, reaching 100,000 completed dwellings in 2027 is therefore assigned little probability.
+The optimized PWDM assigns positive weight only to Experts 1--5; Experts 6 and 7 receive zero because their calibration scores fall below the optimized threshold. The distinction is most visible for the housing-supply variables. For permits, the EWDM upper bound reaches 111,352 because it includes Expert 6's high assessment, whereas the PWDM upper bound is 88,840. Performance weighting therefore produces a substantially tighter and more informative pipeline forecast. The dwelling interval changes less dramatically because the individual assessments are more similar, although the PWDM still shifts the median upward from 72,792 to 74,847.
 
-Building permits measure the future pipeline rather than completed supply, so the two forecasts should not be compared one-for-one. Nevertheless, a permit median of \PermitsMedian{} does not indicate the acceleration required to remove the existing shortage quickly. The supply forecasts are consistent with the constraints identified in Chapter~1: long approval periods, labour scarcity, financing pressure, and nitrogen-related restrictions.
+The completed-dwellings forecast is the principal policy result. The PWDM median is approximately 25\% below the government's ambition of 100,000 dwellings per year, and even its 95th percentile remains below that benchmark. Conditional on this panel and model specification, reaching 100,000 completed dwellings in 2027 is assigned little probability. The permit median of 67,915 likewise does not imply the acceleration required to resolve the shortage rapidly.
 
-The price and rent forecasts describe the affordability consequences of continued scarcity. The optimized median transaction price in Amsterdam is \euro\PriceMedian, with a broad interval that reflects uncertainty about financing conditions and local demand. Free-sector rent growth remains positive throughout the central 90\% interval. These results do not identify the causal contribution of any single policy; they summarize the panel's joint uncertainty about market outcomes.
+For Rotterdam, the optimized median transaction price is \euro669,298, with a 90\% interval from \euro587,397 to \euro763,297. Free-sector rent growth has a median of 4.96\% and a 90\% interval from 2.35\% to 7.53\%. These forecasts describe affordability pressure, but the pooled distributions do not identify the causal contribution of any single housing-market mechanism.

@@ -1,0 +1,28 @@
+\chapter{Programmatic Aggregation Code (Python)}
+\label{appendix:programmatic_code}
+
+The listing below contains the complete target-aggregation module used to construct the piecewise expert distributions, pool them under equal and optimized performance weights, numerically invert the pooled cumulative distributions, and generate Figure~\ref{fig:target_predictions}. Personal names have been replaced by anonymous expert identifiers, and the output path has been made relative to the report repository; neither change affects the calculations.
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\scriptsize,
+    keywordstyle=\color{blue!60!black}\bfseries,
+    commentstyle=\color{green!40!black},
+    stringstyle=\color{orange!70!black},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=8pt,
+    frame=single,
+    rulecolor=\color{gray!40},
+    breaklines=true,
+    breakatwhitespace=false,
+    showstringspaces=false,
+    columns=fullflexible,
+    keepspaces=true,
+    tabsize=4,
+    inputencoding=utf8,
+    captionpos=b
+}
+
+\lstinputlisting[caption={Reproducible Classical Model target aggregation and visualization pipeline.},label={lst:classical_model_python}]{appendix/classical_model_analysis.py}

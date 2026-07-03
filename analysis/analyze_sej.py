@@ -198,8 +198,7 @@ def write_tex(counts, cal_scores, mean_infos, weights, dm_metrics, forecasts,
         f"Performance-weight DM ($\\alpha=0.05$) & {fixed_cal:.4f} & {fixed_info:.3f} & {fixed_combined:.4f} \\\\\n"
         f"Optimized performance-weight DM & {dm_cal:.4f} & {dm_info:.3f} & {dm_combined:.4f} \\\\\n\\bottomrule\n"
     )
-    labels = ["Completed dwellings", "Building permits", "Amsterdam transaction price", "Free-sector rent increase"]
-    units = ["dwellings", "permits", "euros", "percentage points"]
+    labels = ["Completed dwellings", "Building permits", "Rotterdam transaction price", "Free-sector rent growth"]
     target_rows = []
     for j, label in enumerate(labels):
         q = forecasts[j]
@@ -265,7 +264,7 @@ def summary_plots(cal_scores, mean_infos, weights, forecasts, ewdm_forecasts, al
     fig.savefig(FIG / "expert-performance.pdf", bbox_inches="tight")
     plt.close(fig)
 
-    labels = ["Completed dwellings", "Building permits", "Amsterdam price", "Rent growth"]
+    labels = ["Completed dwellings", "Building permits", "Rotterdam price", "Free-sector rent growth"]
     scales = [1_000, 1_000, 1_000, 1]
     units = ["thousands", "thousands", "EUR thousands", "%"]
     fig, axes = plt.subplots(2, 2, figsize=(7.2, 5.8))
