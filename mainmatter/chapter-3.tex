@@ -1,42 +1,44 @@
-\chapter{Elicitation Protocol and Implementation}
+\chapter{Elicitation and Expert Data}
 \label{chapter:elicitation}
 
 \section{The Expert Panel}
 \label{sec:expert_panel}
 
-To guarantee the integrity and depth of this Structured Expert Judgment study, the panel selection strictly targeted individuals possessing substantive domain knowledge regarding the Dutch residential sector and macroeconomic housing dynamics. Given the multi-faceted nature of the current crisis, recruitment focused on distinct channels within the researcher's professional network in the Netherlands, primarily encompassing experts operating out of Rotterdam and the Delft region.\\\newline
-The final panel comprises a strategic mix of real estate professionals, market analysts, and hands-on entrepreneurs. A significant portion of the panel includes founders and core operators of innovative prop-tech startups. These ventures were established by proactive individuals and students explicitly to help citizens navigate the complexities of the Dutch housing shortage. These individuals provide crucial, frontline experiential data on localized supply-demand friction. They are paired with established real estate experts who possess extensive institutional background in commercial property valuation and housing policy.\\\newline
-To comply with the ethical and methodological requirements of scientific elicitation, a strict balance between accountability and anonymity was maintained. In accordance with Cooke's Classical Model, the names and professional qualifications of the participants are formally recorded internally to satisfy the core scientific principle of accountability and enable transparent peer review of the aggregation process. However, to eliminate peer-pressure constraints and allow participants to state their true beliefs without professional exposure, all public-facing individual assessments are scrubbed of identifying information. Within the quantitative analysis and subsequent chapters, experts are referred to exclusively via generic identifiers (e.g., Expert 1, Expert 2), ensuring strict anonymity while preserving mathematical traceability.
+Seven participants were recruited through the researcher's professional and academic network in the Netherlands. Selection emphasized practical familiarity with residential property, housing supply, affordability, or housing management. Table~\ref{tab:expert_profiles} summarizes the panel without disclosing names.
 
-\section{The Elicitation Format and Dry Run}
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{lp{9.5cm}}
+        \toprule
+        \textbf{Identifier} & \textbf{Relevant perspective} \\
+        \midrule
+        Expert 1 & Real-estate practice in Rotterdam \\
+        Expert 2 & Independent professional perspective on the housing market \\
+        Expert 3 & Independent professional perspective on the housing market \\
+        Expert 4 & Independent professional perspective on the housing market \\
+        Expert 5 & MSc Architecture and Urbanism student, TU Delft, focused on housing supply and affordability \\
+        Expert 6 & Professional real-estate agent \\
+        Expert 7 & Housing-management specialist \\
+        \bottomrule
+    \end{tabular}
+    \caption{Anonymous expert profiles used in the analysis.}
+    \label{tab:expert_profiles}
+\end{table}
+
+Accountability and anonymity were separated deliberately. Names and professional details were recorded by the researcher so that participation could be audited, but the analysis uses only Expert 1 through Expert 7. This prevents professional reputation or peer pressure from influencing the public comparison while preserving traceability of every submitted assessment. The raw export contains personal data and is not included in the public repository; anonymous derived results and analysis code are retained.
+
+\section{Elicitation Format and Dry Run}
 \label{sec:elicitation_format}
 
-The data collection process was standardized using a structured questionnaire engineered for Cooke's Classical Model. For every target and calibration variable, experts were required to provide a 90\% subjective confidence interval. This was achieved by eliciting exactly three points from each participant's subjective probability distribution:
-\begin{enumerate}
-    \item The \textbf{5\% quantile}: an under-prediction bound where the expert believes there is only a 5\% chance the true value falls below this limit.
-    \item The \textbf{50\% quantile (median)}: the central estimate where the true value is equally likely to fall above or below.
-    \item The \textbf{95\% quantile}: an over-prediction bound where the expert believes there is only a 5\% chance the true value exceeds this limit.
-\end{enumerate}
-To mitigate cognitive heuristics—specifically anchoring and overconfidence—a formal dry run was executed with a subset of the network prior to the official launch. The pilot phase revealed that while the technical wording of the questions themselves was clear, participants found the underlying statistical concept of quantiles highly challenging to grasp. Specifically, they struggled with the paradigm shift from providing a single ``best guess'' to constructing an interval where they are 90\% certain the true value lies inside and 10\% certain it falls outside. Furthermore, participants frequently confused the 50\% quantile (median) with a traditional deterministic best guess, rather than interpreting it correctly as the specific value that splits the remaining probability space into two equally likely halves (above and below).\\\newline
-The dry run also exposed two practical failure modes. First, participants occasionally mixed proportions with percentages or billions with absolute euro amounts. Second, an example containing a prominent central estimate anchored all three answers too closely around that value. In response, the final questionnaire displayed the requested unit beside every input, separated percentage questions visually from count and currency questions, enforced the ordering $q_{0.05}<q_{0.50}<q_{0.95}$, and replaced point-estimate examples with neutral interval illustrations. The instructions asked participants to consider plausible low and high outcomes before entering the median, reducing anchoring on a single ``best guess.''
+For each calibration and target variable, experts provided the 5th, 50th, and 95th percentiles of their subjective distribution. The 5th and 95th percentiles form a central 90\% uncertainty interval; the 50th percentile is the median. Participants were instructed that 5\% of their probability should lie below the lower value and 5\% above the upper value.
 
-These changes improved the instrument but did not eliminate every scale error: two final response patterns still suggest unit misinterpretation. Those observations were retained rather than corrected after elicitation, because post-hoc repair would weaken empirical control. Their effect is visible in the calibration scores and is discussed in Chapter~\ref{chapter:conclusion_discussion}. The pilot therefore served both as a design intervention and as evidence that comprehension checks should be strengthened in future applications.
+The dry run identified two problems. First, participants tended to treat the median as a deterministic ``best guess'' and then place narrow bounds around it. Second, some mixed percentages, proportions, billions of euros, and absolute amounts. The final instrument therefore displayed units beside every input, visually separated percentage questions from count and currency questions, enforced $q_{0.05}<q_{0.50}<q_{0.95}$, and replaced a central point-estimate example that encouraged anchoring with a neutral interval illustration. Participants were asked to consider plausible low and high outcomes before entering the median.
 
-\section{Questions of Interest (Target Variables)}
-\label{sec:questions_interest}
+These changes reduced avoidable ambiguity but did not eliminate it completely. Two final response patterns still suggest scale misinterpretation. They were retained rather than corrected after elicitation, because post-hoc adjustment would compromise empirical control; their effect is instead reflected in the calibration scores.
 
-The primary forecasting engine of this report focuses on four core target variables of interest for the year 2027. These specific parameters are chosen because they serve as the primary macroeconomic levers indicating the depth, velocity, and trajectory of the Dutch housing crisis:
-\begin{itemize}
-    \item \textbf{Target Question 1 (Total Newly Completed Dwellings):} The total number of newly constructed homes realized across the Netherlands in 2027. This directly tests the feasibility of the government's 100,000 annual output goal.
-    \item \textbf{Target Question 2 (Total Residential Building Permits):} The total number of municipal building permits granted for residential construction in 2027, serving as a leading indicator for future pipeline supply.
-    \item \textbf{Target Question 3 (Average Real Estate Transaction Price in Amsterdam):} The average selling price of an existing owner-occupied home within the municipality of Amsterdam in 2027, tracking urban affordability.
-    \item \textbf{Target Question 4 (Free-Sector Rent Growth):} The percentage increase in average free-sector rents on 1 July 2027 relative to 1 July 2026, capturing pressure in the non-regulated rental segment.
-\end{itemize}
-
-\section{Calibration Questions (Seed Variables)}
+\section{Calibration Questions}
 \label{sec:calibration_questions}
 
-The calculation of performance-based weights within the Classical Model demands a robust set of calibration (or ``seed'') variables. For this study, a set of 10 calibration questions was designed. These questions utilize historical economic and demographic parameters from recent years where the realizations are already fixed and verifiable, but remain obscured enough to prevent direct memorization.\\\newline
-The rationale behind these variables is to empirically measure each expert's statistical accuracy and informativeness within the domain. The questions cover transaction prices, mortgage debt, population growth, housing stock, tenure, transactions, household composition, international enrolment, housing costs, and homelessness. The exact realizations and source documentation are detailed in Appendix~\ref{appendix:elicitation_protocol}. This documentation, together with the reproducible analysis described in Chapter~\ref{chapter:performance_analysis}, permits an external reader to audit the scoring and weight-optimization routine.
+Ten seed variables were chosen from the same broad domain as the target questions. They cover transaction prices, residential mortgage debt, population growth, housing stock, rental tenure, existing-home transactions, one-person households, international student enrolment, rent-to-income ratios, and homelessness. Their realizations were fixed before scoring and concealed from participants during elicitation.
 
-Seven experts completed all fourteen items. Responses were anonymized before analysis and assigned the identifiers Expert 1 through Expert 7. The raw export contains personal identifiers and is therefore not included in the public repository; the analysis code and anonymous derived results are retained for reproducibility.
+The realizations were obtained from traceable Dutch sources, principally CBS, the BAG register, De Nederlandsche Bank, the NVM quarterly market report, and the Dutch Housing Survey. Appendix~\ref{appendix:elicitation_protocol} gives the complete wording, units, realizations, and source for every seed and target variable. Using multiple source types broadens domain coverage, although correlation between housing indicators remains a limitation discussed in Chapter~\ref{chapter:conclusion_discussion}.

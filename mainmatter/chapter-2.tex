@@ -1,4 +1,4 @@
-\chapter{The Classical Model}
+\chapter{Theory: The Classical Model}
 \label{chapter:theory}
 
 \section{Introduction to the Method}
@@ -7,7 +7,7 @@
 Structured Expert Judgment (SEJ) provides a mathematically rigorous framework for quantifying uncertainty when empirical data is insufficient or structurally incomplete. To translate divergent individual expert opinions into a cohesive, probabilistic forecast, this study implements the Classical Model, developed by Roger M. Cooke~\cite{cooke1991experts}. Evidence from the TU Delft expert-judgment database shows how seed variables permit both performance weighting and validation of the resulting Decision Maker across many applied studies~\cite{cookeGoossens2008,colsonCooke2018}. The Classical Model operates as a performance-based linear pooling framework. Rather than assigning equal weight to all experts, it evaluates and rewards experts empirically based on their performance on calibration or ``seed'' variables. These variables are within the relevant domain and have realizations known to the researcher but hidden from the panel during elicitation.
 Elicitations within this framework utilize a quantile format, where experts state their subjective uncertainty by providing the 5\%, 50\% (median), and 95\% quantiles for each variable. The resulting performance weights are rooted in the theory of strictly proper scoring rules. These rules ensure that an expert’s optimal strategy is to state their true beliefs honestly. Under this paradigm, weights are derived as a product of two independent metrics: statistical accuracy (calibration) and informativeness (entropy).
 
-\section{Calibration Score (Statistical Accuracy)}
+\section{Calibration}
 \label{sec:calibration_score}
 
 The calibration score measures the degree to which an expert's subjective probability assessments correspond to the observed frequency of true values. Mathematically, the model treats each expert as a statistical hypothesis. For a set of $n$ independent seed questions, an expert providing 5\%, 50\%, and 95\% quantiles implicitly divides the real line into $q = 4$ inter-quantile intervals: 
@@ -27,7 +27,7 @@ A low calibration score (e.g., $p < 0.05$) indicates that the expert's intervals
 
 The chi-square reference distribution is an asymptotic approximation: it follows from the likelihood-ratio statistic $2nI(s/n,p)$ converging in distribution to $\chi^2_{q-1}$ as the number of independent seed variables grows. Here, $n=10$, so the expected counts in the two 5\% tail bins are only $0.5$. The approximation can therefore be coarse, and small changes in bin membership can have a visible effect on the resulting $p$-value. This study retains the conventional Classical Model score for comparability, but interprets it as a performance diagnostic rather than an exact finite-sample probability.
 
-\section{Information Score (Relative Entropy)}
+\section{Information}
 \label{sec:information_score}
 
 A high calibration score alone is insufficient to guarantee predictive utility; an expert could achieve perfect calibration by providing excessively wide, non-committal bounds that technically capture the true values but offer no decision-making value. Therefore, the Classical Model introduces the Information Score, which measures the concentration or degree of precision within an expert's distributions relative to a minimally informative background measure.\\\newline
@@ -37,9 +37,9 @@ The information score for an expert $e$ on a single variable is calculated using
 \]
 For a set of variables, the overall information score is the average of the information scores across all assessed items. Unlike the calibration score, which behaves as a significance threshold, the information score is an absolute, non-bounded metric where higher values reflect tighter, more highly concentrated interval bounds.
 
-Only three marker quantiles are elicited, so a distributional form is required between and beyond them. The present analysis uses the Classical Model's piecewise uniform or piecewise log-uniform construction over an intrinsic range rather than fitting a single parametric family. Bamber, Aspinall, and Cooke's discussion of sea-level elicitation illustrates why this distinction matters: fitted lognormal distributions introduce shape assumptions beyond the elicited 5th, 50th, and 95th percentiles, whereas non-parametric quantile processing remains driven principally by the judgments actually supplied~\cite{bamberAspinallCooke2016}. The trade-off is that tail behaviour depends explicitly on the intrinsic-range convention, which is tested in Section~\ref{sec:sensitivity}.
+Only three marker quantiles are elicited, so a distributional form is required between and beyond them. The present analysis uses the Classical Model's piecewise uniform or piecewise log-uniform construction over an intrinsic range rather than fitting a single parametric family. Bamber, Aspinall, and Cooke's discussion of sea-level elicitation illustrates why this distinction matters: fitted lognormal distributions introduce shape assumptions beyond the elicited 5th, 50th, and 95th percentiles, whereas non-parametric quantile processing remains driven principally by the judgments actually supplied~\cite{bamberAspinallCooke2016}. The trade-off is that tail behaviour depends explicitly on the intrinsic-range convention; Chapter~\ref{chapter:performance_analysis} therefore reports a sensitivity check.
 
-\section{The Decision Maker (Performance Weights)}
+\section{The Decision Maker}
 \label{sec:decision_maker}
 
 The mathematical integration of these two metrics yields the unnormalized performance weight for each expert. In the global weight variant of the Classical Model, an expert $e$'s raw weight $w(e)$ is determined by multiplying their calibration score by their overall average information score:

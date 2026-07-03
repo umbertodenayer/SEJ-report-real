@@ -146,6 +146,17 @@ def optimize(cal_values, info_values, cal_data, cal_ranges):
     return max(options, key=lambda x: (x[0], x[1]))
 
 
+def evaluate_threshold(alpha, cal_values, info_values, cal_data, cal_ranges, tgt_data, tgt_ranges):
+    raw = cal_values * info_values * (cal_values >= alpha)
+    if raw.sum() == 0:
+        raise ValueError(f"No expert survives alpha={alpha}")
+    weights = raw / raw.sum()
+    seed_quantiles = mixture_quantiles(cal_data, weights, cal_ranges)
+    metrics = dm_seed_score(seed_quantiles, cal_ranges)
+    targets = mixture_quantiles(tgt_data, weights, tgt_ranges)
+    return weights, metrics, targets
+
+
 def evaluate_configuration(cal, tgt, cal_log, tgt_log, overshoot):
     cal_ranges = intrinsic_ranges(cal, cal_log, REALIZATIONS, overshoot)
     tgt_ranges = intrinsic_ranges(tgt, tgt_log, overshoot=overshoot)
@@ -170,7 +181,7 @@ def fmt(x, digits=3):
 
 
 def write_tex(counts, cal_scores, mean_infos, weights, dm_metrics, forecasts,
-              ewdm_metrics, ewdm_forecasts, alpha, sensitivity):
+              ewdm_metrics, ewdm_forecasts, fixed_metrics, alpha, sensitivity):
     OUT.mkdir(parents=True, exist_ok=True)
     rows = []
     for e in range(len(cal_scores)):
@@ -181,11 +192,10 @@ def write_tex(counts, cal_scores, mean_infos, weights, dm_metrics, forecasts,
     (OUT / "expert_table.tex").write_text("\n".join(rows) + "\n\\bottomrule\n")
     _, dm_cal, dm_info, dm_combined = dm_metrics
     _, ew_cal, ew_info, ew_combined = ewdm_metrics
-    best = int(np.argmax(cal_scores * mean_infos))
+    _, fixed_cal, fixed_info, fixed_combined = fixed_metrics
     (OUT / "dm_table.tex").write_text(
-        f"Best Expert (Expert {best+1}) & {cal_scores[best]:.4f} & {mean_infos[best]:.3f} & "
-        f"{cal_scores[best]*mean_infos[best]:.4f} \\\\\n"
         f"Equal-weight DM & {ew_cal:.4f} & {ew_info:.3f} & {ew_combined:.4f} \\\\\n"
+        f"Performance-weight DM ($\\alpha=0.05$) & {fixed_cal:.4f} & {fixed_info:.3f} & {fixed_combined:.4f} \\\\\n"
         f"Optimized performance-weight DM & {dm_cal:.4f} & {dm_info:.3f} & {dm_combined:.4f} \\\\\n\\bottomrule\n"
     )
     labels = ["Completed dwellings", "Building permits", "Amsterdam transaction price", "Free-sector rent increase"]
@@ -291,13 +301,15 @@ def main():
     ew_metrics = dm_seed_score(ew_seed, cal_ranges)
     ew_forecasts = mixture_quantiles(tgt, ew, tgt_ranges)
     dm_metrics = (dm_counts, dm_cal, dm_info, combined)
+    fixed_weights, fixed_metrics, fixed_forecasts = evaluate_threshold(
+        0.05, cal_scores, mean_infos, cal, cal_ranges, tgt, tgt_ranges)
     sensitivity = [
         evaluate_configuration(cal, tgt, CAL_LOG, TGT_LOG, o) for o in (0.05, 0.10, 0.20)
     ]
     sensitivity.append(evaluate_configuration(
         cal, tgt, np.zeros(10, dtype=bool), np.zeros(4, dtype=bool), 0.10))
     write_tex(counts, cal_scores, mean_infos, weights, dm_metrics, forecasts,
-              ew_metrics, ew_forecasts, alpha, sensitivity)
+              ew_metrics, ew_forecasts, fixed_metrics, alpha, sensitivity)
     range_plots(cal, cal_ranges)
     summary_plots(cal_scores, mean_infos, weights, forecasts, ew_forecasts, alpha)
     OUT.mkdir(parents=True, exist_ok=True)
@@ -308,6 +320,9 @@ def main():
                      "optimized_weight": weights[i]} for i in range(len(rows))],
         "equal_weight_dm": {"calibration": ew_metrics[1], "information": ew_metrics[2],
                             "combined": ew_metrics[3], "targets": ew_forecasts.tolist()},
+        "fixed_005_dm": {"calibration": fixed_metrics[1], "information": fixed_metrics[2],
+                         "combined": fixed_metrics[3], "weights": fixed_weights.tolist(),
+                         "targets": fixed_forecasts.tolist()},
         "optimized_dm": {"calibration": dm_cal, "information": dm_info,
                          "combined": combined, "targets": forecasts.tolist()},
         "sensitivity": [

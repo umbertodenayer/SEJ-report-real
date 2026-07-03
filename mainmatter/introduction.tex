@@ -4,49 +4,51 @@
 \section{Background and Motivation}
 \label{sec:background_motivation}
 
-The Dutch housing market faces a structural shortage of roughly 400,000 homes, about 4.8\% of the national housing stock. At the government's target of 100,000 new dwellings per year, closing this gap would take at least four years of construction at full capacity \cite{ABF2025, VRO2025}. Underlying this deficit are profound demographic and structural shifts that expand far beyond standard supply constraints. Foremost among these drivers is continuous net population growth paired with a significant, long-term societal transition toward smaller household sizes~\cite{ABF2025, ABN2025}.\\\newline
-Crucially, economic research by ABN AMRO indicates that the deepening housing crisis is driven more by internal demographic shifts than by simple population growth~\cite{ABN2025}. This creates a profound analytical paradox that purely quantitative trend models fail to reconcile. As illustrated in Figure~\ref{fig:abn_demographics}, the total number of housing units per inhabitant in the Netherlands has actually risen consistently over the last century, reaching an all-time high of approximately 0.46 homes per person. On paper, a baseline data-driven trend extrapolation would suggest that housing availability per capita is better than ever. However, the real-world reality is a shortage because the average household size is rapidly shrinking as a massive share of the population transitions to single-person households. Because more people are living alone, the country structurally requires far more individual dwellings to house the exact same number of citizens~\cite{ABN2025}. Purely volume-based historical data treats a citizen from 1950 and a citizen from 2026 identically, completely ignoring this qualitative demographic mismatch.\\\newline
-But hitting the necessary building targets to correct this imbalance remains highly unlikely. Project feasibility is under pressure from rising mortgage rates, supply-chain disruptions, and climbing material and labor costs~\cite{ABF2025}. On top of this, the Netherlands operates under a heavy administrative burden: dense paperwork and slow permitting procedures routinely delay project initialization, with average timelines stretching between 8 to 12 years from initial conceptualization to formal key handover~\cite{VRO2025, ABN2025}. Furthermore, increasingly strict environmental boundaries, particularly the persistent nitrogen crisis, combined with severe personnel shortages have frozen or stalled major residential projects nationwide~\cite{VRO2025, EIB2025}.
+The Dutch housing market faces a structural shortage of roughly 400,000 homes, equivalent to about 4.8\% of the national housing stock. Even at the government's ambition of 100,000 new dwellings per year, closing this gap would require at least four years of construction at full capacity~\cite{ABF2025,VRO2025}. Demand is reinforced by population growth and, more importantly, a long-term shift towards smaller households~\cite{ABF2025,ABN2025}.
+
+This demographic change creates an apparent paradox. Figure~\ref{fig:abn_demographics} shows that the number of dwellings per inhabitant has increased to approximately 0.46, yet the shortage persists. The reason is that more people live alone: a smaller average household requires more dwellings for the same population~\cite{ABN2025}. A simple per-capita trend therefore obscures a material change in housing demand.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.8\textwidth]{mainmatter/Screenshot 2026-06-28 at 23.19.43.png} 
-    \caption{The historical increase of housing units per inhabitant in the Netherlands, showing a surface-level statistical growth that masks underlying demographic tightness~\cite{ABN2025}.}
+    \includegraphics[width=0.78\textwidth]{mainmatter/Screenshot 2026-06-28 at 23.19.43.png}
+    \caption{Housing units per inhabitant in the Netherlands. The aggregate increase masks the effect of declining household size~\cite{ABN2025}.}
     \label{fig:abn_demographics}
 \end{figure}
+
+Supply cannot adjust quickly. Higher financing, material, and labour costs weaken project feasibility, while permitting procedures may extend development timelines to 8--12 years~\cite{VRO2025,ABN2025}. The Dutch nitrogen crisis (\textit{stikstofcrisis}) further restricts construction activity, and shortages of qualified personnel delay projects that have already passed the planning stage~\cite{VRO2025,EIB2025}. The housing deficit is therefore not a single-variable problem: demographic pressure, regulation, environmental limits, and construction capacity interact.
 
 \section{The Data Challenge}
 \label{sec:data_challenge}
 
-This complex climate makes the future hard to model from historical data alone, since simple trend extrapolation cannot capture these multi-faceted disruptions. Unregistered labor migrants are a prime example of this embedded data deficiency on the demand side. Official housing statistics rely heavily on municipal registries (\textit{Basisregistratie Personen}), which completely fail to capture this group, even though they actively occupy the residential housing stock. As a result, official figures systematically understate true demand, and the real shortage is likely worse than reported~\cite{ABF2025}.
+Historical data do not fully capture these interactions. On the demand side, official statistics rely heavily on the municipal population register (BRP). Unregistered labour migrants may occupy housing without appearing in that register, causing measured demand to understate actual pressure on the housing stock~\cite{ABF2025}.
 
-A second critical example lies on the supply side: the unprecedented labor scarcity bottlenecking construction capacity. While official government targets aim for 100,000 new homes annually, traditional forecasting models assume a relatively stable labor pool. However, as illustrated in Figure~\ref{fig:vacaturegraad}, the construction sector  faces a historic vacancy rate of 80 unfilled roles per 1,000 jobs as of mid-2025, nearly double the national economic average of 44~\cite{EIB2025}. Purely data-driven extrapolations are structurally blind to these physical labor constraints, leading to highly optimistic production estimates that cannot be realized in practice.
+On the supply side, conventional forecasts often extrapolate production from periods with a more stable labour pool. By mid-2025, however, construction faced approximately 80 vacancies per 1,000 jobs, compared with 44 across the economy~\cite{EIB2025}. Figure~\ref{fig:vacaturegraad} illustrates that divergence. A model based only on past output may consequently predict projects that cannot be staffed or delivered.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.8\textwidth]{mainmatter/graph.png} 
-    \caption{Vacancy rate (\textit{vacaturegraad}) in the construction sector compared to the Dutch national average, 2021--2025, Source: CBS}
+    \includegraphics[width=0.78\textwidth]{mainmatter/graph.png}
+    \caption{Vacancy rate (\textit{vacaturegraad}) in construction and the Dutch economy, 2021--2025. Source: CBS.}
     \label{fig:vacaturegraad}
 \end{figure}
 
-These instances represent a broader issue: many highly relevant market variables are simply not captured in empirical data. Purely data-driven models cannot account for them, but domain experts often can, drawing on contextual and experiential knowledge that doesn't show up in registries. This is why expert elicitation is a necessary complement to data-driven forecasting for the 2027 housing outlook, not a replacement for it, but a mathematically sound way to capture what empirical databases structurally miss.
-\section{Structured Expert Judgment and the Classical Model}
-\label{sec:sej_classical_model}
+Expert judgment is used here as a complement to empirical forecasting, not as a substitute for it. Domain experts can incorporate institutional knowledge and emerging constraints that are absent from registries or too recent to estimate reliably from historical series.
 
-However, relying on the unguided expertise of individuals can be challenging, as human judgment is systematically vulnerable to cognitive heuristics and psychological biases, most notably overconfidence and anchoring. To achieve scientific validity and mitigate these flaws, expert judgment experiments must be highly structured and strictly follow the general principles of rational consensus: reproducibility, accountability, empirical control, neutrality, and fairness.
+\section{Questions of Interest}
+\label{sec:questions_interest}
 
-To satisfy these programmatic principles, this study employs the Classical Model for Structured Expert Judgment (SEJ), developed by Roger M. Cooke. The Classical Model operates as a performance-based linear pooling framework. Rather than treating all expert assessments equally, the model imposes empirical control by scoring experts on a series of calibration (or ``seed'') variables from their field where the true values are already known. Experts are subsequently weighted according to a mathematical combination of their statistical accuracy (calibration) and their informativeness, creating a scoring rule that heavily incentivizes them to state their true, unbiased beliefs.
+The study elicits uncertainty about four target variables for 2027:
+\begin{enumerate}
+    \item \textbf{Completed dwellings:} How many newly completed dwellings will be realized in the Netherlands during 2027?
+    \item \textbf{Residential building permits:} How many residential building permits will be issued in the Netherlands during 2027?
+    \item \textbf{Amsterdam transaction price:} What will be the average selling price of an existing owner-occupied dwelling in Amsterdam during 2027?
+    \item \textbf{Free-sector rent growth:} What will be the percentage increase in average free-sector rents on 1 July 2027 relative to 1 July 2026?
+\end{enumerate}
 
-\section{Objective and Report Structure}
-\label{sec:objective_structure}
+Together, these variables describe realized supply, the future construction pipeline, owner-occupied affordability, and pressure in the non-regulated rental sector.
 
-The primary objective of this research is to apply the Classical Model to construct a performance-weighted probabilistic forecast of the Dutch residential housing market for the year 2027. By eliciting the 5\%, 50\%, and 95\% quantiles from a panel of domain experts, this study aims to mathematically combine their assessments into an optimized ``Decision Maker'' forecast that formally captures the epistemic uncertainty where historical empirical data is structurally blind.
+\section{Structured Expert Judgment and Outline}
+\label{sec:sej_outline}
 
-The remainder of this report is structured as follows:
-\begin{itemize}
-    \item \textbf{Chapter 2} introduces the theory and mathematical foundation behind the Classical Model.
-    \item \textbf{Chapter 3} details the elicitation process, outlining the panel of experts, the specific target questions of interest, and the rationale behind the chosen calibration questions.
-    \item \textbf{Chapter 4} provides a performance analysis of the experts using the \textit{Excalibur} software environment.
-    \item \textbf{Chapter 5} presents the optimized forecasts for the questions of interest.
-    \item \textbf{Chapter 6} offers a synthesis of conclusions and a discussion of the study's limitations.
-\end{itemize}
+Unguided expert opinion is vulnerable to overconfidence and anchoring. This study therefore applies Cooke's Classical Model for Structured Expert Judgment (SEJ), which evaluates experts on calibration variables with known realizations and combines their distributions using performance-based weights. The method provides empirical control while preserving uncertainty in probabilistic form~\cite{cooke1991experts,cookeGoossens2008}.
+
+Chapter~2 presents the Classical Model. Chapter~3 documents the panel, elicitation instrument, and calibration variables. Chapter~4 reports individual scores and compares the Equal Weight, fixed-threshold, and optimized Decision Makers. Chapter~5 presents the four housing forecasts. Chapter~6 concludes and discusses methodological limitations.
