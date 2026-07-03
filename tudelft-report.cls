@@ -81,8 +81,14 @@
     \setmathsf{Arial}
     \setmathtt{Arial}
 
-    \newfontfamily\titlestyle{Roboto Slab Light}
-    \newfontfamily\largetitlestyle{Roboto Slab Thin}
+    \IfFontExistsTF{Roboto Slab Light}{%
+        \newfontfamily\titlestyle{Roboto Slab Light}
+        \newfontfamily\largetitlestyle{Roboto Slab Thin}
+    }{%
+        % Portable fallback for CI and clean Overleaf installations.
+        \newfontfamily\titlestyle{Arial}
+        \newfontfamily\largetitlestyle{Arial}
+    }
 \fi
 
 %% ----------------------------------------------------------------------

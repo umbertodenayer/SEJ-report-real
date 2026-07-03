@@ -1,13 +1,15 @@
 \documentclass{tudelft-report}
 
 %% Set up the bibliography
-\usepackage{biblatex}
+\usepackage[backend=bibtex]{biblatex}
 \addbibresource{report.bib}
 
 %% Additional packages and commands
 \usepackage{parskip}
+\usepackage{eurosym}
 \setlist{itemsep=-2pt} % Reducing white space in lists slightly
 \renewcommand{\deg}{\si{\degree}\xspace} % Use \deg easily, everywhere
+\input{analysis/generated/results_macros}
 
 %% ----------------------------------------------------------------------
 %%    Begin of document + Frontmatter (Roman page numbering)
@@ -29,6 +31,8 @@
 \makecover
 
 \input{frontmatter/title-report}
+
+\input{frontmatter/summary}
 
 \tableofcontents
 %\listoffigures
