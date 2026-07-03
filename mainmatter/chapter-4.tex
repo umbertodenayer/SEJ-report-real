@@ -1,0 +1,47 @@
+\chapter{Results and Performance Analysis}
+\label{chapter:performance_analysis}
+
+\section{Background Measures and Technical Setup}
+\label{sec:background_measures}
+
+Before computing the expert performance weights within the \textit{Excalibur} software environment, the background measures for the optimization interval must be explicitly defined. The Classical Model utilizes these background measures to calculate Shannon relative information by establishing a minimally informative reference distribution over an expanded interval $[L, U]$, where the lower and upper bounds are determined by applying an overshoot factor to the extreme values supplied by the panel.\\\newline
+For variables tracking standard percentages, demographic rates, or absolute quantities bounded within a relatively narrow scale, a \textit{Uniform} background measure is applied. This uniform allocation assumes equal probability density across the entire support interval. Conversely, for variables spanning multiple orders of magnitude—such as absolute macro-financial indicators, total currency metrics in billions of Euros, or demographic absolute aggregates—a \textit{Log-uniform} background measure is structurally required. The log-uniform distribution assigns equal probability to equal ratios, preventing high-magnitude estimates from disproportionately distorting the information text calculations. For this study, the ten calibration variables and four target variables are categorized accordingly to guarantee mathematical consistency across all scoring routines.
+
+\section{Methodological Comparison of Aggregation Schemes}
+\label{sec:dm_comparisons}
+
+To satisfy the regulatory requirements of rational consensus and evaluate the robust nature of the expert elicitation, four distinct combination methodologies—known as Decision Makers (DMs)—are evaluated and compared within this chapter. Evaluating these alternative synthetic experts ensures empirical control and provides a baseline to justify the choice of the final predictive framework:\\\newline
+\textbf{Equal Weight Decision Maker (EWDM):} This benchmark combination acts as a standard control mechanism by assigning a uniform linear pooling coefficient to every participant ($w_i = 1/N$). The EWDM serves as a baseline to demonstrate whether performance-weighted scoring rules offer a statistically superior forecast compared to an uncalibrated average.\\\newline
+\textbf{Performance Weight Decision Maker at Zero Threshold ($\text{PWDM}_{\alpha=0}$):} This model implements Cooke's global weighting rule but sets the significance alpha threshold to zero. Under this scheme, no expert is eliminated based on poor statistical accuracy unless their calibration score is mathematically equal to zero, allowing the information scores of all marginally calibrated participants to influence the joint distribution.\\\newline
+\textbf{Performance Weight Decision Maker at Standard Threshold ($\text{PWDM}_{\alpha=0.05}$):} This framework enforces a strict, traditional statistical significance cutoff ($\alpha = 0.05$). Experts whose chi-square goodness-of-fit $p$-value falls below 0.05 are flagged as statistically uncalibrated—meaning their subjective intervals structurally mismatch reality beyond the bounds of random variation—and their pooling weights are strictly set to zero.\\\newline
+\textbf{Optimized Decision Maker ($\text{PWDM}_{\alpha^*}$):} The mathematically optimal synthetic expert. The \textit{Excalibur} engine dynamically varies the significance threshold $\alpha$ across all realized sample values to locate the exact cutoff $\alpha^*$ that maximizes the product of the calibration score and the mean relative information score of the resulting aggregated Decision Maker.
+
+\section{Quantitative Expert Performance Metrics}
+\label{sec:quantitative_metrics}
+
+Prior to executing the scoring routines within the \textit{Excalibur} software environment, the background measures for the optimization interval must be explicitly designated. For variables tracking bounded proportions or structural rates, a \textit{Uniform} background measure is applied. This includes Seed 3 (net employment growth), Seed 5 (national average vacancy rate), Seed 6 (labor stagnation share), Seed 7 (uittreedleeftijd), Seed 9 (estimated structural shortage percentage metrics), and Target 4 (free-sector rent escalation coefficients). Conversely, a \textit{Log-uniform} background measure is applied to variables spanning multiple orders of magnitude or tracking absolute valuation figures, namely Seed 1 (total housing stock absolute count), Seed 2 (vacant available supply absolute count), Seed 4 (construction vacancy rate absolute units), Seed 8 (annual natural labor retirement outflow), Seed 10 (drop in bankruptcies absolute index scaling), Target 1 (realized volume of new dwellings), Target 2 (building permits count), and Target 3 (average transaction price in Amsterdam). This differentiation prevents scale disparities from misrepresenting the informational constraints of the panel.\\\newline
+Once the individual expert questionnaires are fully compiled, the empirical data points will be processed to populate the scoring framework. Table~\ref{tab:expert_performance_results} outlines the formal comparative structure utilized to contrast individual performance metrics against the synthetic Decision Makers. To establish a rigorous statistical benchmark, the performance of the mathematically Optimized Decision Maker ($\text{PWDM}_{\alpha^*}$) will be directly evaluated against both the traditional Equal Weight Decision Maker (EWDM) and the single top-performing individual baseline—the ``best expert''—identified from the panel based on calibration scoring.\\\newline
+The optimization routine within the software engine dynamically shifts the significance level cutoff threshold, denoted as $\alpha^*$. This threshold defines the exact boundary where an expert's hypothesis is either retained or assigned a weight of zero based on their goodness-of-fit $p$-value. The software searches across all realized sample values to locate the precise $\alpha^*$ value that maximizes the mathematical product of the resulting joint calibration score and the mean relative information score, providing an un-arbitrary, performance-maximized synthetic forecast.
+
+\begin{table}[htbp]
+    \centering
+    \small
+    \begin{tabular}{l c c c c}
+        \hline
+        \textbf{Expert / DM ID} & \textbf{Calibration Score ($p$-value)} & \textbf{Mean Info Score} & \textbf{Unnormalized Weight} & \textbf{Normalized Weight} \\ \hline
+        Expert 1 & \dots & \dots & \dots & \dots \\ 
+        Expert 2 & \dots & \dots & \dots & \dots \\ 
+        Expert 3 & \dots & \dots & \dots & \dots \\ 
+        Expert 4 & \dots & \dots & \dots & \dots \\ 
+        Expert 5 & \dots & \dots & \dots & \dots \\ 
+        Expert 6 & \dots & \dots & \dots & \dots \\ 
+        Expert 7 & \dots & \dots & \dots & \dots \\ 
+        Expert 8 & \dots & \dots & \dots & \dots \\ \hline
+        \textbf{EWDM} & \dots & \dots & \text{N/A} & \dots \\ 
+        \textbf{PWDM ($\alpha = 0$)} & \dots & \dots & \text{N/A} & \dots \\ 
+        \textbf{PWDM ($\alpha = 0.05$)} & \dots & \dots & \text{N/A} & \dots \\ 
+        \textbf{Optimized DM ($\alpha^*$)} & \dots & \dots & \text{N/A} & \dots \\ \hline
+    \end{tabular}
+    \caption{Empirical scoring metrics and linear pooling weights for the individual expert panel and synthetic Decision Makers.}
+    \label{tab:expert_performance_results}
+\end{table}

@@ -1,0 +1,38 @@
+\chapter{Elicitation Protocol and Implementation}
+\label{chapter:elicitation}
+
+\section{The Expert Panel}
+\label{sec:expert_panel}
+
+To guarantee the integrity and depth of this Structured Expert Judgment study, the panel selection strictly targeted individuals possessing substantive domain knowledge regarding the Dutch residential sector and macroeconomic housing dynamics. Given the multi-faceted nature of the current crisis, recruitment focused on distinct channels within the researcher's professional network in the Netherlands, primarily encompassing experts operating out of Rotterdam and the Delft region.\\\newline
+The final panel comprises a strategic mix of real estate professionals, market analysts, and hands-on entrepreneurs. A significant portion of the panel includes founders and core operators of innovative prop-tech startups. These ventures were established by proactive individuals and students explicitly to help citizens navigate the complexities of the Dutch housing shortage. These individuals provide crucial, frontline experiential data on localized supply-demand friction. They are paired with established real estate experts who possess extensive institutional background in commercial property valuation and housing policy.\\\newline
+To comply with the ethical and methodological requirements of scientific elicitation, a strict balance between accountability and anonymity was maintained. In accordance with Cooke's Classical Model, the names and professional qualifications of the participants are formally recorded internally to satisfy the core scientific principle of accountability and enable transparent peer review of the aggregation process. However, to eliminate peer-pressure constraints and allow participants to state their true beliefs without professional exposure, all public-facing individual assessments are scrubbed of identifying information. Within the quantitative analysis and subsequent chapters, experts are referred to exclusively via generic identifiers (e.g., Expert 1, Expert 2), ensuring strict anonymity while preserving mathematical traceability.
+
+\section{The Elicitation Format and Dry Run}
+\label{sec:elicitation_format}
+
+The data collection process was standardized using a structured questionnaire engineered for Cooke's Classical Model. For every target and calibration variable, experts were required to provide a 90\% subjective confidence interval. This was achieved by eliciting exactly three points from each participant's subjective probability distribution:
+\begin{enumerate}
+    \item The \textbf{5\% quantile}: an under-prediction bound where the expert believes there is only a 5\% chance the true value falls below this limit.
+    \item The \textbf{50\% quantile (median)}: the central estimate where the true value is equally likely to fall above or below.
+    \item The \textbf{95\% quantile}: an over-prediction bound where the expert believes there is only a 5\% chance the true value exceeds this limit.
+\end{enumerate}
+To mitigate cognitive heuristics—specifically anchoring and overconfidence—a formal dry run was executed with a subset of the network prior to the official launch. The pilot phase revealed that while the technical wording of the questions themselves was clear, participants found the underlying statistical concept of quantiles highly challenging to grasp. Specifically, they struggled with the paradigm shift from providing a single ``best guess'' to constructing an interval where they are 90\% certain the true value lies inside and 10\% certain it falls outside. Furthermore, participants frequently confused the 50\% quantile (median) with a traditional deterministic best guess, rather than interpreting it correctly as the specific value that splits the remaining probability space into two equally likely halves (above and below).\\\newline
+Conducting this dry run provided a critical safety checkpoint for the study's reproducibility. In similar expert elicitations, failing to run a pilot phase routinely leads to structural data failures, where experts erroneously input uncalibrated percentages or static estimates instead of absolute, properly ordered numeric bounds ($5\% < 50\% < 95\%$). To resolve these fundamental conceptual roadblocks before the final deployment, the final elicitation instrument was heavily refined. Detailed written training examples and intuitive visual aids were integrated directly into the questionnaire documentation to illustrate how the intervals represent probability areas, ensuring that the final expert panel could flawlessly quantify their epistemic uncertainty.
+
+\section{Questions of Interest (Target Variables)}
+\label{sec:questions_interest}
+
+The primary forecasting engine of this report focuses on four core target variables of interest for the year 2027. These specific parameters are chosen because they serve as the primary macroeconomic levers indicating the depth, velocity, and trajectory of the Dutch housing crisis:
+\begin{itemize}
+    \item \textbf{Target Question 1 (Total Newly Completed Dwellings):} The total number of newly constructed homes realized across the Netherlands in 2027. This directly tests the feasibility of the government's 100,000 annual output goal.
+    \item \textbf{Target Question 2 (Total Residential Building Permits):} The total number of municipal building permits granted for residential construction in 2027, serving as a leading indicator for future pipeline supply.
+    \item \textbf{Target Question 3 (Average Real Estate Transaction Price in Rotterdam):} The average selling price of an existing owner-occupied home within the municipality of Rotterdam in 2027, tracking urban affordability.
+    \item \textbf{Target Question 4 (Total Stock Absorption Rate):} The annualized percentage of active market inventory successfully absorbed or transacted within the calendar year, reflecting underlying market liquidity and demand intensity.
+\end{itemize}
+
+\section{Calibration Questions (Seed Variables)}
+\label{sec:calibration_questions}
+
+The calculation of performance-based weights within the Classical Model demands a robust set of calibration (or ``seed'') variables. For this study, a set of 10 calibration questions was designed. These questions utilize historical economic and demographic parameters from recent years where the realizations are already fixed and verifiable, but remain obscured enough to prevent direct memorization.\\\newline
+The rationale behind these variables is to empirically measure each expert's statistical accuracy and informativeness within the exact boundaries of the domain. The questions leverage historical data points concerning national population shifts, localized housing stock evaluations, municipal registration deviations, and price index trajectories. The exact realizations and the underlying source documentation, drawn from the *Centraal Bureau voor de Statistiek* (CBS) Bevolkingsdashboard and the *Nederlandse Vereniging van Makelaars* (NVM) quarterly market reports, are fully detailed in Appendix A. This explicit documentation satisfies the core scientific principle of reproducibility, ensuring that any external peer can audit the scoring and weight optimization routines executed in this research.

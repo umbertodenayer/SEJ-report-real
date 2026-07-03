@@ -1,0 +1,55 @@
+\chapter{The Classical Model}
+\label{chapter:theory}
+
+\section{Introduction to the Method}
+\label{sec:intro_classical_model}
+
+Structured Expert Judgment (SEJ) provides a mathematically rigorous framework for quantifying uncertainty when empirical data is insufficient or structurally incomplete. To translate divergent individual expert opinions into a cohesive, probabilistic forecast, this study implements the Classical Model, developed by Roger M. Cooke~\cite{cooke1991experts}. The Classical Model operates as a performance-based linear pooling framework. Rather than assigning equal weight to all experts—a naive approach that assumes uniform proficiency—the Classical Model evaluates and rewards experts empirically based on their performance on a set of calibration or ``seed'' variables. These seed variables represent parameters within the relevant domain for which the true values are known to the researcher but hidden from the expert panel during elicitation.\\\newline
+Elicitations within this framework utilize a quantile format, where experts state their subjective uncertainty by providing the 5\%, 50\% (median), and 95\% quantiles for each variable. The resulting performance weights are rooted in the theory of strictly proper scoring rules. These rules ensure that an expert’s optimal strategy is to state their true beliefs honestly. Under this paradigm, weights are derived as a product of two independent metrics: statistical accuracy (calibration) and informativeness (entropy).
+
+\section{Calibration Score (Statistical Accuracy)}
+\label{sec:calibration_score}
+
+The calibration score measures the degree to which an expert's subjective probability assessments correspond to the observed frequency of true values. Mathematically, the model treats each expert as a statistical hypothesis. For a set of $n$ independent seed questions, an expert providing 5\%, 50\%, and 95\% quantiles implicitly divides the real line into $q = 4$ inter-quantile intervals: 
+\[
+(-\infty, x_{0.05}], \quad (x_{0.05}, x_{0.50}], \quad (x_{0.50}, x_{0.95}], \quad \text{and} \quad (x_{0.95}, \infty)
+\]
+The theoretically expected probability vector for any perfectly calibrated expert falling into these four bins is $p = (0.05, 0.45, 0.45, 0.05)$.\\\newline
+Let $s = (s_1, s_2, s_3, s_4)$ denote the vector of actual realized frequencies, representing how many true values of the seed variables fell into each of the expert's four intervals. The discrepancy between the expected probability distribution $p$ and the empirically observed sample distribution $s/n$ is evaluated using a Shannon relative information metric, or cross-entropy:
+\[
+I(s/n, p) = \sum_{i=1}^{4} \frac{s_i}{n} \ln\left(\frac{s_i/n}{p_i}\right)
+\]
+Under the null hypothesis that the expert is perfectly calibrated, the test statistic $2n \cdot I(s/n, p)$ asymptotically follows a Chi-square distribution with $q - 1 = 3$ degrees of freedom ($\chi^2_3$). The calibration score is defined as the $p$-value or significance level of this goodness-of-fit test:
+\[
+\text{Cal}(e) = 1 - F_{\chi^2_3}\left(2n \cdot I(s/n, p)\right)
+\]
+A low calibration score (e.g., $p < 0.05$) indicates that the expert's intervals are typically too narrow (overconfidence) or structurally skewed, causing them to miss the true value more often than statistically expected.
+
+\section{Information Score (Relative Entropy)}
+\label{sec:information_score}
+
+A high calibration score alone is insufficient to guarantee predictive utility; an expert could achieve perfect calibration by providing excessively wide, non-committal bounds that technically capture the true values but offer no decision-making value. Therefore, the Classical Model introduces the Information Score, which measures the concentration or degree of precision within an expert's distributions relative to a minimally informative background measure.\\\newline
+The information score for an expert $e$ on a single variable is calculated using Shannon relative information. Let $f_e$ represent the density function of the expert's subjective distribution (typically uniform or log-uniform between quantiles), and let $g$ represent a uniform background density measure across an optimization interval defined by the extreme values of the entire panel. For a given variable, the information score is defined as:
+\[
+\text{Inf}(e) = \int f_e(x) \ln\left(\frac{f_e(x)}{g(x)}\right) dx
+\]
+For a set of variables, the overall information score is the average of the information scores across all assessed items. Unlike the calibration score, which behaves as a significance threshold, the information score is an absolute, non-bounded metric where higher values reflect tighter, more highly concentrated interval bounds.
+
+\section{The Decision Maker (Performance Weights)}
+\label{sec:decision_maker}
+
+The mathematical integration of these two metrics yields the unnormalized performance weight for each expert. In the global weight variant of the Classical Model, an expert $e$'s raw weight $w(e)$ is determined by multiplying their calibration score by their overall average information score:
+\[
+w(e) = \text{Cal}(e) \times \text{Inf}(e) \times \mathbf{1}_{\{\text{Cal}(e) \ge \alpha\}}
+\]
+where $\mathbf{1}_{\{\cdot\}}$ is an indicator function and $\alpha$ represents a strict optimization significance threshold.\\\newline
+The optimization process determines an optimal value for $\alpha$ that maximizes the joint calibration and information performance of the resulting aggregated distribution. If an expert's calibration $p$-value falls below the selected $\alpha$ threshold, they are determined to be statistically uncalibrated for the purposes of the study, and their performance weight drops to zero.\\\newline
+The raw weights of the remaining experts who satisfy the performance cutoff ($\text{Cal}(e) \ge \alpha$) are subsequently normalized to sum to unity:
+\[
+w_{\text{norm}}(e) = \frac{w(e)}{\sum_{j} w(j)}
+\]
+These normalized performance weights are applied as linear pooling coefficients to aggregate the individual expert distributions into a single, optimized synthetic expert known as the \textit{Decision Maker} (DM):
+\[
+f_{\text{DM}}(x) = \sum_{e} w_{\text{norm}}(e) \cdot f_e(x)
+\]
+This performance-weighted DM distribution provides the final mathematically optimized probabilistic forecast that will be utilized to evaluate the target variables for the 2027 Dutch housing outlook.

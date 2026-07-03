@@ -1,0 +1,27 @@
+\chapter{Conclusions and Discussion}
+\label{chapter:conclusion_discussion}
+
+\section{Synthesis of Findings}
+\label{sec:synthesis}
+
+This study successfully applied Cooke's Classical Model for Structured Expert Judgment to construct mathematically optimized, performance-weighted probabilistic forecasts for the 2027 Dutch residential housing market. By pooling the subjective probability distributions of a domain-specific expert panel, the research captured deep epistemic uncertainties where historical data repositories remain structurally blind.\\\newline
+[\textit{Insert final consensus sentence here: e.g., The aggregated expert consensus strongly indicates that the Dutch government's target of 100,000 newly completed dwellings per year will not be met in 2027, as the optimized Decision Maker median distribution shifts significantly below this threshold, reflecting severe systemic constraints.}]
+
+\section{Critical Reflection and Methodological Limitations}
+\label{sec:critical_reflection}
+
+To satisfy the scientific requirements of a rigorous Structured Expert Judgment experiment, a thorough self-critique of the underlying study design must be performed, exposing key structural limitations. 
+
+\subsection*{Panel Selection, Conveniencing Bias, and Homogeneity}
+First, the compilation of the expert panel introduces potential conveniencing and network homogeneity biases. Although recruitment specifically targeted individuals with hands-on exposure to the housing crisis—such as real estate startup operators and domain analysts—the sample was heavily drawn from the researcher's proximate academic and professional network within the TU Delft ecosystem. Relying on university professors and fellow Master's students introduces a demographic skew in terms of age, geographical concentration, and institutional viewpoint. Academic experts and student founders understand the research value and are highly willing to participate, but their baseline assumptions may be more homogeneous than a panel containing commercial property developers, institutional banking executives, or government policymakers, potentially compressing the informational spread.
+
+\subsection*{Sample Size and Expert Scale Optimization}
+Second, the absolute size of the expert panel presents an institutional constraint. While the Classical Model functions flawlessly with smaller, highly specialized cohorts, expanding the absolute count of experts generally enhances statistical stability and minimizes the distortionary impact of an individual anomalous assessment. A larger, more diversified panel would have injected a broader array of independent professional heuristics into the linear pooling routine, providing a more stable and representative aggregated forecast.
+
+\subsection*{Calibration Bounds and Elicitation Fatigue Fatigue Mitigation}
+Third, a clear methodological compromise was struck regarding the number of calibration (seed) variables. While large-scale, professional applications of the Classical Model frequently utilize dozens of seed variables to optimize the chi-square asymptotic performance test, this student-level report limited the survey to exactly ten calibration questions. This was a deliberate design choice implemented to defend against elicitation fatigue. Methodological literature establishes that multi-hour questionnaires induce cognitive exhaustion, forcing experts to output uncalibrated, rushed bounds simply to complete the task. Given that participants were busy professionals and academics donating their time, restricting the survey to ten seed questions was an essential trade-off to protect data quality, though it slightly reduces the statistical resolution of the calibration scores.
+
+\subsection*{Unmonitored Elicitation Environments and Cognitive Controls}
+First, the physical elicitation environment introduces an unobservable variable. Methodological literature by Cooke states that in an ideal experimental environment, the researcher should be physically present during the elicitation process to completely eliminate the possibility of structural confusion and to monitor data entry directly.\\\newline
+Because the scope and geographical constraints of this study necessitated a remote, digital rollout, a face-to-face environment was not feasible. To mitigate this limitation, rather than utilizing a standard spreadsheet layout or a generic Google Sheets template, a dedicated, custom web application was engineered and deployed specifically for this survey instrument. This bespoke digital environment allowed for high personalization, embedding interactive training examples and visual graphic aids directly into the UI to maximize presentation clarity and guide the experts through the interval construction mechanics.\\\newline
+Furthermore, while physical presence was impossible, continuous real-time availability was maintained online so that experts could immediately reach out via digital communication channels to resolve any ambient doubts or ambiguities regarding the questionnaire text. Nevertheless, because the panel completed the surveys independently online, it remains impossible to verify that experts did not inadvertently access search engines to look up the historical parameters used in the calibration questions. If any external indexing occurred, individual calibration scores would be artificially inflated, perturbing the empirical control mechanism of the performance weighting engine. Future iterations should utilize direct interview controls to eliminate this exposure entirely.
