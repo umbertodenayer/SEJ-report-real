@@ -15,13 +15,13 @@ import matplotlib.pyplot as plt
 
 # 1. Expert Data Definitions
 experts_metadata = {
-    1: {'name': 'Expert 1', 'expertise': 'Real estate in Rotterdam'},
-    2: {'name': 'Expert 2', 'expertise': 'Independent/Professional'},
-    3: {'name': 'Expert 3', 'expertise': 'Independent/Professional'},
-    4: {'name': 'Expert 4', 'expertise': 'Independent/Professional'},
-    5: {'name': 'Expert 5', 'expertise': 'MSc Architecture & Urbanism (TU Delft)'},
-    6: {'name': 'Expert 6', 'expertise': 'Professional Real Estate Agent'},
-    7: {'name': 'Expert 7', 'expertise': 'Housing Management'}
+    1: {'name': 'Expert 1', 'expertise': 'Withheld in anonymized analysis'},
+    2: {'name': 'Expert 2', 'expertise': 'Withheld in anonymized analysis'},
+    3: {'name': 'Expert 3', 'expertise': 'Withheld in anonymized analysis'},
+    4: {'name': 'Expert 4', 'expertise': 'Withheld in anonymized analysis'},
+    5: {'name': 'Expert 5', 'expertise': 'Withheld in anonymized analysis'},
+    6: {'name': 'Expert 6', 'expertise': 'Withheld in anonymized analysis'},
+    7: {'name': 'Expert 7', 'expertise': 'Withheld in anonymized analysis'}
 }
 
 # 5%, 50%, and 95% quantiles for the 4 target questions of interest
